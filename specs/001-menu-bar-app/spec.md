@@ -113,6 +113,37 @@ confirming remaining notes persist across an app relaunch.
 
 ---
 
+### User Story 5 - Quick Add via Menu Bar (Priority: P5)
+
+A user right-clicks the Slate icon in the menu bar and adds an item to Today or a note to Notes
+directly from the context menu, without opening the main window, so that capturing a fleeting
+thought takes one click instead of a full context switch.
+
+**Why this priority**: Depends on the Today (P1) and Notes (P4) tabs already existing, since Quick
+Add writes into the same lists those tabs display. It's a convenience layer on top of stories
+already built, not a foundation for anything else.
+
+**Independent Test**: Can be fully tested by right-clicking the menu-bar icon without opening the
+main window, selecting "Quick Add to Today," typing text, pressing Enter, then opening the main
+window and confirming the item appears in the Today checklist. Repeat for "Quick Add to Notes."
+
+**Acceptance Scenarios**:
+
+1. **Given** the main window is closed, **When** the user right-clicks the menu-bar icon, **Then**
+   a context menu appears offering "Quick Add to Today," "Quick Add to Notes," "Open Slate," and
+   "Quit" — and the main window does not open.
+2. **Given** the context menu is open, **When** the user selects "Quick Add to Today" or "Quick
+   Add to Notes," **Then** a small floating text-entry prompt appears near the menu bar.
+3. **Given** the Quick Add prompt is open with text entered, **When** the user presses Enter,
+   **Then** the text is appended as a new entry to the corresponding list, the prompt closes, and
+   the main window does not open.
+4. **Given** the Quick Add prompt is open, **When** the user presses Escape, **Then** the prompt
+   closes without creating any entry.
+5. **Given** an item was added via Quick Add, **When** the user later opens the main window,
+   **Then** the item appears in the corresponding tab exactly as entered.
+
+---
+
 ### Edge Cases
 
 - What happens when a user tries to add a checklist item, tracker row, or note with empty text?
@@ -125,8 +156,13 @@ confirming remaining notes persist across an app relaunch.
 - What happens if the local data file is missing or corrupted on launch? The app must start with
   an empty state per tab rather than crashing.
 - How does the app behave when the user clicks the menu-bar icon while the window is already open?
-  The window closes (toggle behavior).
-- How does the app behave when the user clicks outside the open window? The window closes, mirroring standard macOS menu-bar app behavior.
+  The window toggles closed (click again to hide).
+- How does the app behave when the user clicks outside the open window?
+  The window closes, mirroring standard macOS menu-bar app behavior.
+- How does the app behave when the user right-clicks the menu-bar icon?
+  A context menu appears instead of the toggle window, offering: "Quick Add to Today", "Quick Add to Notes", "Open Slate", and "Quit".
+- How does Quick Add work?
+  Selecting "Quick Add to Today" or "Quick Add to Notes" opens a small floating text-entry prompt near the menu bar (not the full app window). Typing text and pressing Enter appends it to the corresponding list and closes the prompt. Pressing Escape cancels without adding anything.
 
 ## Requirements *(mandatory)*
 
@@ -134,8 +170,8 @@ confirming remaining notes persist across an app relaunch.
 
 - **FR-001**: The app MUST run as a macOS menu-bar (status bar) application and MUST NOT appear in
   the Dock or the Cmd+Tab application switcher.
-- **FR-002**: Clicking the menu-bar icon MUST toggle a small window open or closed, anchored near
-  the menu bar.
+- **FR-002**: Left-clicking the menu-bar icon MUST toggle a small window open or closed, anchored
+  near the menu bar.
 - **FR-003**: Clicking outside the open window MUST close it.
 - **FR-004**: The window MUST present exactly four tabs, in this fixed order: Today, Topics,
   Tracker, Notes.
@@ -168,6 +204,24 @@ confirming remaining notes persist across an app relaunch.
   first launch).
 - **FR-018**: If the local data file is missing or unreadable on launch, the app MUST start with
   an empty state instead of failing to launch.
+- **FR-019**: Right-clicking the menu-bar icon MUST show a context menu instead of toggling the
+  main window, containing exactly: "Quick Add to Today", "Quick Add to Notes", "Open Slate", and
+  "Quit".
+- **FR-020**: Selecting "Quick Add to Today" or "Quick Add to Notes" MUST open a small floating
+  text-entry prompt near the menu bar, distinct from the main window.
+- **FR-021**: Submitting non-empty text in the Quick Add prompt via Enter MUST append it as a new
+  entry to the corresponding list (an unchecked item for Today, a note for Notes) and close the
+  prompt without opening the main window.
+- **FR-022**: Pressing Escape while the Quick Add prompt is open MUST close it without creating
+  any entry.
+- **FR-023**: The Quick Add prompt MUST NOT create an entry from empty or whitespace-only text
+  (same rule as FR-016).
+- **FR-024**: Data added via Quick Add MUST be immediately visible in the main window's
+  corresponding tab the next time it is opened, since both read from the same persisted data
+  store.
+- **FR-025**: Selecting "Open Slate" from the context menu MUST open the main window, equivalent
+  to a left-click when the window is closed.
+- **FR-026**: Selecting "Quit" from the context menu MUST quit the application.
 
 ### Key Entities
 
@@ -195,6 +249,8 @@ confirming remaining notes persist across an app relaunch.
   network connection disabled.
 - **SC-006**: On first launch with no prior data, every tab displays a usable empty state rather
   than an error or blank crash screen.
+- **SC-007**: A user can add an item via the right-click Quick Add menu — from right-click to the
+  entry being saved — in under 3 seconds, without the main window ever opening.
 
 ## Assumptions
 
@@ -210,3 +266,8 @@ confirming remaining notes persist across an app relaunch.
 - "Local" persistence means data is stored on the same machine and is not backed up or synced
   elsewhere automatically in this version.
 - Launch-at-login behavior is out of scope for this version; the user starts the app manually.
+- Quick Add supports only the Today checklist and the Notes list. Topics (which requires choosing
+  a category) and Tracker (which requires three fields) are not reachable via Quick Add and are
+  managed only from the main window.
+- The Quick Add prompt and the main window read from and write to the same local data store —
+  there is no separate or cached copy; a change made in one is immediately visible in the other.
