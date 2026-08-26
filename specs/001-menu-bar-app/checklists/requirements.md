@@ -35,6 +35,9 @@
   Topics categories are user-created or fixed, and whether Tracker Status is a fixed set or free
   text) were resolved with explicit, documented defaults (FR-007, FR-009, FR-011) rather than left
   as open clarification markers, since each has a clear industry-standard/least-surprising answer
-  for a personal single-user tool. Revisit these in `/speckit-clarify` if that judgment is wrong.
-- All items pass. Spec is ready for `/speckit-plan` (or `/speckit-clarify` first if any of the
-  above defaults should be revisited).
+  for a personal single-user tool.
+- `/speckit-clarify` session (2026-08-26) resolved three further gaps found after the Quick Add
+  feature was added: single-instance enforcement (FR-027), independence of Tracker's
+  Category/Track from Topics categories (FR-011a), and Topics category delete/rename support
+  (FR-009a/FR-009b/FR-009c). See the spec's Clarifications section for the Q&A record.
+- All items pass. Spec is ready for `/speckit-plan`.

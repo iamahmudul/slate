@@ -8,6 +8,14 @@
 
 **Input**: User description: "Build a macOS menu-bar app called Slate. It lives in the menu bar (not the Dock) and opens a small window when clicked. It has four fixed tabs: Today (a daily checklist), Topics (grouped checklists by category), Tracker (a simple table: item, category/track, status), and Notes (freeform list). All data is saved locally so it persists between launches. No settings, no customization, no presets in this version — tab names and structure are hardcoded for now."
 
+## Clarifications
+
+### Session 2026-08-26
+
+- Q: Should Slate prevent a second instance of the app from being launched while one is already running, instead of opening two separate windows? → A: Yes — enforce single instance; a second launch attempt focuses/shows the existing window instead of opening a new one.
+- Q: Should the Tracker tab's "Category/Track" values be drawn from the same categories created in Topics, or be a fully independent free-text field? → A: Independent — Tracker's Category/Track is its own free-text field, unrelated to Topics categories.
+- Q: Should users be able to delete or rename an entire Topics category, not just the items inside it? → A: Both — users can delete a category (and its items) as one action, and rename a category in place. No reordering or merging of categories.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Daily Checklist in Today (Priority: P1)
@@ -60,6 +68,10 @@ an app relaunch.
    one category, **Then** only that item's state changes; other categories are unaffected.
 4. **Given** categories and items have been created, **When** the app is quit and reopened,
    **Then** all categories and their items appear exactly as left, with completion states intact.
+5. **Given** a category with items exists, **When** the user deletes that category, **Then** the
+   category and all items under it are removed together.
+6. **Given** a category exists, **When** the user renames it, **Then** the category displays the
+   new name and all its items remain under it unchanged.
 
 ---
 
@@ -163,6 +175,13 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
   A context menu appears instead of the toggle window, offering: "Quick Add to Today", "Quick Add to Notes", "Open Slate", and "Quit".
 - How does Quick Add work?
   Selecting "Quick Add to Today" or "Quick Add to Notes" opens a small floating text-entry prompt near the menu bar (not the full app window). Typing text and pressing Enter appends it to the corresponding list and closes the prompt. Pressing Escape cancels without adding anything.
+- What happens if the user tries to launch Slate while it is already running? The app enforces a
+  single running instance; the second launch attempt brings the existing window to the front
+  instead of starting a new process or window.
+- What happens if the main window is already open when the user adds an item via Quick
+  Add? The relevant tab (Today or Notes) in the already-open window updates to show the
+  new entry immediately, without the user needing to close/reopen the window or switch
+  tabs away and back.
 
 ## Requirements *(mandatory)*
 
@@ -185,11 +204,19 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
   specific category, mark items complete or incomplete, and remove items.
 - **FR-009**: The Topics tab MUST let users create new categories freely; categories are
   user-defined content, not a fixed/hardcoded list.
+- **FR-009a**: The Topics tab MUST let users delete an entire category as a single action, which
+  also removes all checklist items nested under it.
+- **FR-009b**: The Topics tab MUST let users rename an existing category in place; the category's
+  items remain unchanged and still grouped under it after the rename.
+- **FR-009c**: The Topics tab MUST NOT support reordering or merging categories in this version.
 - **FR-010**: The Tracker tab MUST display a table with exactly three columns — Item,
   Category/Track, and Status — and MUST let users add a row, edit any of the three fields on a
   row, and remove a row.
 - **FR-011**: The Status field on a Tracker row MUST be free-form text entered by the user, not
   restricted to a fixed set of predefined values.
+- **FR-011a**: The Category/Track field on a Tracker row MUST be free-form text entered by the
+  user, independent of and unrelated to the categories created in the Topics tab. The two are
+  separate concepts that happen to share the word "category."
 - **FR-012**: The Notes tab MUST let users add a freeform text note, edit an existing note's text,
   and delete a note.
 - **FR-013**: The app MUST persist all data (Today checklist items, Topics categories and items,
@@ -216,20 +243,27 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
   any entry.
 - **FR-023**: The Quick Add prompt MUST NOT create an entry from empty or whitespace-only text
   (same rule as FR-016).
-- **FR-024**: Data added via Quick Add MUST be immediately visible in the main window's
-  corresponding tab the next time it is opened, since both read from the same persisted data
-  store.
+- **FR-024**: Data added via Quick Add MUST be reflected in the main window's
+  corresponding tab immediately if that window is already open, and automatically on
+  next open if it was closed — since both read from and write through the same
+  persisted data store.
 - **FR-025**: Selecting "Open Slate" from the context menu MUST open the main window, equivalent
   to a left-click when the window is closed.
 - **FR-026**: Selecting "Quit" from the context menu MUST quit the application.
+- **FR-027**: The app MUST enforce a single running instance. If the user attempts to launch Slate
+  while it is already running, the app MUST bring the existing window to the front (or leave it as
+  the single menu-bar process) instead of starting a second instance.
 
 ### Key Entities
 
 - **Checklist Item**: A single to-do entry with text content and a completion state (checked/
   unchecked). Used by both the Today tab (ungrouped) and the Topics tab (grouped under a category).
 - **Category**: A user-created named group under the Topics tab that checklist items belong to.
+  Users can create, rename, and delete categories (deleting removes its items too); categories
+  cannot be reordered or merged in this version.
 - **Tracker Row**: An entry with three free-text fields — Item, Category/Track, and Status —
-  representing one thing being tracked.
+  representing one thing being tracked. Category/Track is independent free text, not a reference
+  to a Topics Category.
 - **Note**: A freeform text entry shown in the Notes tab, independent of any checklist or table
   structure.
 
@@ -251,6 +285,9 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
   than an error or blank crash screen.
 - **SC-007**: A user can add an item via the right-click Quick Add menu — from right-click to the
   entry being saved — in under 3 seconds, without the main window ever opening.
+- **SC-008**: If the main window is open when an item is added via Quick Add, the
+  corresponding tab shows the new entry within 1 second, with no manual refresh action
+  from the user.
 
 ## Assumptions
 
