@@ -52,7 +52,7 @@ assets/         # tray icon
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
 - [ ] T004 [P] Implement the data store in `src/main/store.js`: load `slate-data.json` from `app.getPath('userData')` on startup, default to the empty root shape from data-model.md if the file is missing or fails to parse (FR-018); provide an in-memory data object plus a save function that writes atomically (write to a temp file, then rename); on write failure, keep the in-memory change as the source of truth for the session, do not throw/crash, and retry on the next mutation's save call (FR-028)
-- [ ] T005 [P] Implement Tray creation and main-window show/hide/toggle in `src/main/windows.js`: build the `Tray` from `assets/tray-iconTemplate.png`, left-click toggles the main `BrowserWindow` open/closed anchored near the tray icon, and the window closes when it loses focus (FR-002, FR-003)
+- [ ] T005 [P] Implement Tray creation and main-window show/hide/toggle in `src/main/windows.js`: build the `Tray` from `assets/tray-iconTemplate.png`, left-click toggles the main `BrowserWindow` open/closed anchored near the tray icon, and the window closes when it loses focus (FR-002, FR-003). Closing the main window calls `win.hide()`, never `win.destroy()` or `win.close()` with default behavior — the window instance must persist so `data:changed` pushes still reach it while hidden.
 - [ ] T006 [P] Implement the main window shell in `src/renderer/index.html`, `src/renderer/styles.css`, `src/renderer/app.js`: four fixed tab buttons in order (Today, Topics, Tracker, Notes) with empty panels and tab-switching logic, no data wiring yet (FR-004, FR-005)
 - [ ] T007 [P] Implement the main-window preload script in `src/preload/preload.js`: `contextBridge.exposeInMainWorld('slate', {})` with an empty namespace, to be extended per user story below
 - [ ] T008 Implement app bootstrap in `src/main/main.js`: call `app.requestSingleInstanceLock()` and quit immediately if not acquired; handle `second-instance` by showing/focusing the existing main window; call `app.dock.hide()` on macOS; on `app.whenReady()`, load the store (T004) and create the tray/main window (T005) (FR-027) (depends on T004, T005)
@@ -157,6 +157,7 @@ assets/         # tray icon
 - [ ] T033 [P] Run `quickstart.md` §7 (first-launch and corrupted-data-file empty states) manual check (FR-017, FR-018)
 - [ ] T034 [P] Run `quickstart.md` §8 (offline) manual check (Constitution Principle II, SC-005)
 - [ ] T035 Run the full `quickstart.md` script end-to-end as final v1 sign-off
+- [ ] T036 [P] Manual check: with existing data already saved, click the tray icon and confirm the main window renders that data within approximately 1 second (SC-001)
 
 ---
 
@@ -187,7 +188,7 @@ assets/         # tray icon
 - Phase 1: T003 is parallel to T001/T002
 - Phase 2: T004, T005, T006, T007 can run in parallel (different files, no cross-dependency); T008 and T009 are sequential after them
 - Once Phase 2 is complete, the IPC-handler task that starts each of US2/US3/US4 (T014, T018, T022) can run in parallel with each other and with US1's T010, since each touches a distinct set of channels in `src/main/ipc.js` — coordinate merges if working in the same file concurrently
-- Phase 8: T032, T033, T034 can run in parallel
+- Phase 8: T032, T033, T034, T036 can run in parallel
 
 ---
 
