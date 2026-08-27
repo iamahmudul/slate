@@ -182,6 +182,9 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
   Add? The relevant tab (Today or Notes) in the already-open window updates to show the
   new entry immediately, without the user needing to close/reopen the window or switch
   tabs away and back.
+- What happens if a save to the local data file fails (e.g., disk full, permissions error)?
+  The app keeps the change in memory so the current session isn't affected, and silently
+  retries the write on the next mutation. No error dialog is shown to the user in this version.
 
 ## Requirements *(mandatory)*
 
@@ -253,6 +256,9 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
 - **FR-027**: The app MUST enforce a single running instance. If the user attempts to launch Slate
   while it is already running, the app MUST bring the existing window to the front (or leave it as
   the single menu-bar process) instead of starting a second instance.
+- **FR-028**: If a write to the local data file fails, the app MUST retain the change in
+  memory for the current session and MUST NOT crash or show an error dialog; the app MUST
+  attempt to write again on the next data mutation.
 
 ### Key Entities
 
@@ -308,3 +314,7 @@ window and confirming the item appears in the Today checklist. Repeat for "Quick
   managed only from the main window.
 - The Quick Add prompt and the main window read from and write to the same local data store —
   there is no separate or cached copy; a change made in one is immediately visible in the other.
+- Write failures are handled silently in-memory for this version; there is no user-facing
+  error state, retry indicator, or manual "save now" action. If the app is quit while a
+  write is still failing, the unsaved change may be lost — acceptable given FR-018's parallel
+  handling of read failures.
