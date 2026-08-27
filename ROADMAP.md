@@ -28,7 +28,7 @@ past v1 so the first version stays small enough to actually ship.
 | Sprint | Goal | Key deliverables | Status |
 |---|---|---|---|
 | **0 — Foundation** | Repo + Spec Kit + SDLC scaffolding | GitHub repo, `specify init`, `constitution.md`, README, `.gitignore` | Done |
-| **1 — Slate v1 MVP** | Working offline app, fixed 4 tabs (Today / Topics / Tracker / Notes), packaged | `specs/001-menu-bar-app/{spec.md,plan.md,tasks.md}`; implemented via Claude Code; tagged `v0.1.0` | Spec written — plan/tasks/implement next |
+| **1 — Slate v1 MVP** | Working offline app, fixed 4 tabs (Today / Topics / Tracker / Notes), packaged | `specs/001-menu-bar-app/{spec.md,plan.md,tasks.md}`; implemented via Claude Code; tagged `v0.1.0` | Implemented — Phase 8 manual verification pending |
 | **2 — Customization & presets** | Configurable tabs, groups, presets, non-destructive reset | Settings UI spec; preset data model | Not started |
 | **3 — Notifications** | Reminders for daily checklist | Notification spec, permission handling | Not started |
 | **4 — CI/CD basics** | Automated checks on every push | GitHub Actions: lint, build check, auto-draft release on tag | Not started |
