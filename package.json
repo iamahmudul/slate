@@ -1,0 +1,13 @@
+{
+  "name": "slate",
+  "version": "0.1.0",
+  "description": "Personal macOS menu-bar productivity app",
+  "private": true,
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^32.0.0"
+  }
+}

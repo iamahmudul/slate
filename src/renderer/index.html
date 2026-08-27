@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Slate</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="tabs">
+    <button class="tab-button active" data-tab="today" type="button">Today</button>
+    <button class="tab-button" data-tab="topics" type="button">Topics</button>
+    <button class="tab-button" data-tab="tracker" type="button">Tracker</button>
+    <button class="tab-button" data-tab="notes" type="button">Notes</button>
+  </nav>
+
+  <main>
+    <section id="tab-today" class="tab-panel active"></section>
+    <section id="tab-topics" class="tab-panel"></section>
+    <section id="tab-tracker" class="tab-panel"></section>
+    <section id="tab-notes" class="tab-panel"></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

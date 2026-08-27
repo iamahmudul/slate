@@ -39,9 +39,9 @@ assets/         # tray icon
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project directory structure: `src/main/`, `src/preload/`, `src/renderer/`, `src/quickadd/`, `assets/` per plan.md Project Structure
-- [ ] T002 Initialize `package.json` at repo root with `electron` as the sole dependency, `main` pointing to `src/main/main.js`, and a `start` script that runs Electron
-- [ ] T003 [P] Add the tray icon template image at `assets/tray-iconTemplate.png` (macOS template image so it adapts to light/dark menu bars)
+- [X] T001 Create project directory structure: `src/main/`, `src/preload/`, `src/renderer/`, `src/quickadd/`, `assets/` per plan.md Project Structure
+- [X] T002 Initialize `package.json` at repo root with `electron` as the sole dependency, `main` pointing to `src/main/main.js`, and a `start` script that runs Electron
+- [X] T003 [P] Add the tray icon template image at `assets/tray-iconTemplate.png` (macOS template image so it adapts to light/dark menu bars)
 
 ---
 
@@ -51,12 +51,12 @@ assets/         # tray icon
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Implement the data store in `src/main/store.js`: load `slate-data.json` from `app.getPath('userData')` on startup, default to the empty root shape from data-model.md if the file is missing or fails to parse (FR-018); provide an in-memory data object plus a save function that writes atomically (write to a temp file, then rename); on write failure, keep the in-memory change as the source of truth for the session, do not throw/crash, and retry on the next mutation's save call (FR-028)
-- [ ] T005 [P] Implement Tray creation and main-window show/hide/toggle in `src/main/windows.js`: build the `Tray` from `assets/tray-iconTemplate.png`, left-click toggles the main `BrowserWindow` open/closed anchored near the tray icon, and the window closes when it loses focus (FR-002, FR-003). Closing the main window calls `win.hide()`, never `win.destroy()` or `win.close()` with default behavior — the window instance must persist so `data:changed` pushes still reach it while hidden.
-- [ ] T006 [P] Implement the main window shell in `src/renderer/index.html`, `src/renderer/styles.css`, `src/renderer/app.js`: four fixed tab buttons in order (Today, Topics, Tracker, Notes) with empty panels and tab-switching logic, no data wiring yet (FR-004, FR-005)
-- [ ] T007 [P] Implement the main-window preload script in `src/preload/preload.js`: `contextBridge.exposeInMainWorld('slate', {})` with an empty namespace, to be extended per user story below
-- [ ] T008 Implement app bootstrap in `src/main/main.js`: call `app.requestSingleInstanceLock()` and quit immediately if not acquired; handle `second-instance` by showing/focusing the existing main window; call `app.dock.hide()` on macOS; on `app.whenReady()`, load the store (T004) and create the tray/main window (T005) (FR-027) (depends on T004, T005)
-- [ ] T009 Wire `src/preload/preload.js` and `src/renderer/index.html` into the main `BrowserWindow`'s `webPreferences` in `src/main/windows.js`, with `contextIsolation: true` and `nodeIntegration: false` (depends on T005, T006, T007)
+- [X] T004 [P] Implement the data store in `src/main/store.js`: load `slate-data.json` from `app.getPath('userData')` on startup, default to the empty root shape from data-model.md if the file is missing or fails to parse (FR-018); provide an in-memory data object plus a save function that writes atomically (write to a temp file, then rename); on write failure, keep the in-memory change as the source of truth for the session, do not throw/crash, and retry on the next mutation's save call (FR-028)
+- [X] T005 [P] Implement Tray creation and main-window show/hide/toggle in `src/main/windows.js`: build the `Tray` from `assets/tray-iconTemplate.png`, left-click toggles the main `BrowserWindow` open/closed anchored near the tray icon, and the window closes when it loses focus (FR-002, FR-003). Closing the main window calls `win.hide()`, never `win.destroy()` or `win.close()` with default behavior — the window instance must persist so `data:changed` pushes still reach it while hidden.
+- [X] T006 [P] Implement the main window shell in `src/renderer/index.html`, `src/renderer/styles.css`, `src/renderer/app.js`: four fixed tab buttons in order (Today, Topics, Tracker, Notes) with empty panels and tab-switching logic, no data wiring yet (FR-004, FR-005)
+- [X] T007 [P] Implement the main-window preload script in `src/preload/preload.js`: `contextBridge.exposeInMainWorld('slate', {})` with an empty namespace, to be extended per user story below
+- [X] T008 Implement app bootstrap in `src/main/main.js`: call `app.requestSingleInstanceLock()` and quit immediately if not acquired; handle `second-instance` by showing/focusing the existing main window; call `app.dock.hide()` on macOS; on `app.whenReady()`, load the store (T004) and create the tray/main window (T005) (FR-027) (depends on T004, T005)
+- [X] T009 Wire `src/preload/preload.js` and `src/renderer/index.html` into the main `BrowserWindow`'s `webPreferences` in `src/main/windows.js`, with `contextIsolation: true` and `nodeIntegration: false` (depends on T005, T006, T007)
 
 **Checkpoint**: App launches, tray icon appears, no Dock/Cmd+Tab icon, window toggles open/closed showing four empty tabs, data store is loaded — no per-tab data operations wired yet.
 
@@ -70,10 +70,10 @@ assets/         # tray icon
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Implement `today:list`, `today:add`, `today:toggle`, `today:remove` IPC handlers in `src/main/ipc.js`, rejecting empty/whitespace-only text on add, and calling the store's save function after every mutation (FR-006, FR-007, FR-016)
-- [ ] T011 [US1] Expose `slate.today.list/add/toggle/remove` methods via `contextBridge` in `src/preload/preload.js`
-- [ ] T012 [US1] Implement Today tab rendering and interactions (add input, checklist items, checkbox toggle, remove control) in `src/renderer/app.js`
-- [ ] T013 [US1] Add a "No items yet" empty state for the Today tab in `src/renderer/app.js` and `src/renderer/styles.css` (FR-017)
+- [X] T010 [US1] Implement `today:list`, `today:add`, `today:toggle`, `today:remove` IPC handlers in `src/main/ipc.js`, rejecting empty/whitespace-only text on add, and calling the store's save function after every mutation (FR-006, FR-007, FR-016)
+- [X] T011 [US1] Expose `slate.today.list/add/toggle/remove` methods via `contextBridge` in `src/preload/preload.js`
+- [X] T012 [US1] Implement Today tab rendering and interactions (add input, checklist items, checkbox toggle, remove control) in `src/renderer/app.js`
+- [X] T013 [US1] Add a "No items yet" empty state for the Today tab in `src/renderer/app.js` and `src/renderer/styles.css` (FR-017)
 
 **Checkpoint**: Today tab is fully usable and persists independently — MVP complete.
 
@@ -87,10 +87,10 @@ assets/         # tray icon
 
 ### Implementation for User Story 2
 
-- [ ] T014 [P] [US2] Implement `topics:list`, `topics:addCategory`, `topics:renameCategory`, `topics:deleteCategory`, `topics:addItem`, `topics:toggleItem`, `topics:removeItem` IPC handlers in `src/main/ipc.js`, rejecting empty/whitespace-only category names or item text, cascading item deletion when a category is deleted, and saving after every mutation (FR-008, FR-009, FR-009a, FR-009b, FR-009c, FR-016)
-- [ ] T015 [US2] Expose `slate.topics.*` methods via `contextBridge` in `src/preload/preload.js`
-- [ ] T016 [US2] Implement Topics tab rendering in `src/renderer/app.js`: category groups with rename and delete controls, and nested item add/check/remove per category
-- [ ] T017 [US2] Add a "No categories yet" empty state for the Topics tab in `src/renderer/app.js` and `src/renderer/styles.css`
+- [X] T014 [P] [US2] Implement `topics:list`, `topics:addCategory`, `topics:renameCategory`, `topics:deleteCategory`, `topics:addItem`, `topics:toggleItem`, `topics:removeItem` IPC handlers in `src/main/ipc.js`, rejecting empty/whitespace-only category names or item text, cascading item deletion when a category is deleted, and saving after every mutation (FR-008, FR-009, FR-009a, FR-009b, FR-009c, FR-016)
+- [X] T015 [US2] Expose `slate.topics.*` methods via `contextBridge` in `src/preload/preload.js`
+- [X] T016 [US2] Implement Topics tab rendering in `src/renderer/app.js`: category groups with rename and delete controls, and nested item add/check/remove per category
+- [X] T017 [US2] Add a "No categories yet" empty state for the Topics tab in `src/renderer/app.js` and `src/renderer/styles.css`
 
 **Checkpoint**: Topics tab is fully usable and persists independently, without affecting Today.
 
@@ -104,10 +104,10 @@ assets/         # tray icon
 
 ### Implementation for User Story 3
 
-- [ ] T018 [P] [US3] Implement `tracker:list`, `tracker:addRow`, `tracker:updateRow`, `tracker:removeRow` IPC handlers in `src/main/ipc.js`, treating Item/Category/Status as independent free text with no link to Topics categories, saving after every mutation (FR-010, FR-011, FR-011a)
-- [ ] T019 [US3] Expose `slate.tracker.*` methods via `contextBridge` in `src/preload/preload.js`
-- [ ] T020 [US3] Implement Tracker tab rendering in `src/renderer/app.js`: editable table with add-row and remove-row controls
-- [ ] T021 [US3] Add a "No tracked items yet" empty state for the Tracker tab in `src/renderer/app.js` and `src/renderer/styles.css`
+- [X] T018 [P] [US3] Implement `tracker:list`, `tracker:addRow`, `tracker:updateRow`, `tracker:removeRow` IPC handlers in `src/main/ipc.js`, treating Item/Category/Status as independent free text with no link to Topics categories, saving after every mutation (FR-010, FR-011, FR-011a)
+- [X] T019 [US3] Expose `slate.tracker.*` methods via `contextBridge` in `src/preload/preload.js`
+- [X] T020 [US3] Implement Tracker tab rendering in `src/renderer/app.js`: editable table with add-row and remove-row controls
+- [X] T021 [US3] Add a "No tracked items yet" empty state for the Tracker tab in `src/renderer/app.js` and `src/renderer/styles.css`
 
 **Checkpoint**: Tracker tab is fully usable and persists independently.
 
@@ -121,10 +121,10 @@ assets/         # tray icon
 
 ### Implementation for User Story 4
 
-- [ ] T022 [P] [US4] Implement `notes:list`, `notes:add`, `notes:update`, `notes:remove` IPC handlers in `src/main/ipc.js`, rejecting empty/whitespace-only text, saving after every mutation (FR-012, FR-016)
-- [ ] T023 [US4] Expose `slate.notes.*` methods via `contextBridge` in `src/preload/preload.js`
-- [ ] T024 [US4] Implement Notes tab rendering in `src/renderer/app.js`: list with add, inline edit, and delete
-- [ ] T025 [US4] Add a "No notes yet" empty state for the Notes tab in `src/renderer/app.js` and `src/renderer/styles.css`
+- [X] T022 [P] [US4] Implement `notes:list`, `notes:add`, `notes:update`, `notes:remove` IPC handlers in `src/main/ipc.js`, rejecting empty/whitespace-only text, saving after every mutation (FR-012, FR-016)
+- [X] T023 [US4] Expose `slate.notes.*` methods via `contextBridge` in `src/preload/preload.js`
+- [X] T024 [US4] Implement Notes tab rendering in `src/renderer/app.js`: list with add, inline edit, and delete
+- [X] T025 [US4] Add a "No notes yet" empty state for the Notes tab in `src/renderer/app.js` and `src/renderer/styles.css`
 
 **Checkpoint**: Notes tab is fully usable and persists independently.
 
@@ -138,12 +138,12 @@ assets/         # tray icon
 
 ### Implementation for User Story 5
 
-- [ ] T026 [US5] Implement the tray right-click `Menu` with exactly "Quick Add to Today", "Quick Add to Notes", "Open Slate", "Quit" in `src/main/windows.js` (FR-019, FR-025, FR-026)
-- [ ] T027 [US5] Implement on-demand Quick Add window creation in `src/main/windows.js`: small, frameless, always-on-top, positioned near the tray icon's bounds, destroyed/hidden after submit, Escape, or blur (FR-020)
-- [ ] T028 [P] [US5] Implement the Quick Add prompt UI in `src/quickadd/quickadd.html`, `src/quickadd/quickadd.css`, `src/quickadd/quickadd.js`: text input, Enter submits, Escape cancels without creating an entry (FR-022)
-- [ ] T029 [P] [US5] Implement the Quick Add preload script in `src/preload/preload-quickadd.js`: `contextBridge.exposeInMainWorld('slate', { quickAdd: { submit } })`
-- [ ] T030 [US5] Implement the `quickAdd:submit` IPC handler in `src/main/ipc.js`: routes to the Today or Notes create path based on `target`, rejects empty/whitespace-only text, saves, and signals the prompt to close on success (FR-021, FR-023)
-- [ ] T031 [US5] Implement the `data:changed` push from main to every open renderer window after each mutation in `src/main/ipc.js`, and a listener in `src/renderer/app.js` that replaces the affected tab's data and re-renders it live (FR-024, SC-008)
+- [X] T026 [US5] Implement the tray right-click `Menu` with exactly "Quick Add to Today", "Quick Add to Notes", "Open Slate", "Quit" in `src/main/windows.js` (FR-019, FR-025, FR-026)
+- [X] T027 [US5] Implement on-demand Quick Add window creation in `src/main/windows.js`: small, frameless, always-on-top, positioned near the tray icon's bounds, destroyed/hidden after submit, Escape, or blur (FR-020)
+- [X] T028 [P] [US5] Implement the Quick Add prompt UI in `src/quickadd/quickadd.html`, `src/quickadd/quickadd.css`, `src/quickadd/quickadd.js`: text input, Enter submits, Escape cancels without creating an entry (FR-022)
+- [X] T029 [P] [US5] Implement the Quick Add preload script in `src/preload/preload-quickadd.js`: `contextBridge.exposeInMainWorld('slate', { quickAdd: { submit } })`
+- [X] T030 [US5] Implement the `quickAdd:submit` IPC handler in `src/main/ipc.js`: routes to the Today or Notes create path based on `target`, rejects empty/whitespace-only text, saves, and signals the prompt to close on success (FR-021, FR-023)
+- [X] T031 [US5] Implement the `data:changed` push from main to every open renderer window after each mutation in `src/main/ipc.js`, and a listener in `src/renderer/app.js` that replaces the affected tab's data and re-renders it live (FR-024, SC-008)
 
 **Checkpoint**: Quick Add works standalone and updates an already-open main window immediately, without breaking Stories 1-4.
 
