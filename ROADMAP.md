@@ -19,7 +19,7 @@ past v1 so the first version stays small enough to actually ship.
 
 - **Shell:** Electron (menu-bar tray app, no Dock icon)
 - **Renderer:** single-file HTML/CSS/JS, no build step for v1
-- **Storage v1:** browser `localStorage` inside the renderer (offline-first)
+- **Storage v1:** main-process-owned JSON file (app.getPath('userData')), accessed via IPC — not browser localStorage.
 - **Storage v2 (later sprint):** hosted backend + sync
 - **Packaging:** `electron-builder` later, unsigned for personal use early on
 
