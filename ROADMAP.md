@@ -52,4 +52,4 @@ back up.
 ## 5. Status log
 
 - **Sprint 0:** complete — repo live, Spec Kit initialized, constitution written.
-- **Sprint 1:** implementation complete (T001-T031). Phase 8 manual verification (T032-T036) in progress via quickstart.md.
+- **Sprint 1:** All 36 tasks done, quickstart.md fully verified. Tagged v0.1.0.
