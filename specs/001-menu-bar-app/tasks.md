@@ -153,11 +153,11 @@ assets/         # tray icon
 
 **Purpose**: Whole-app verification that spans all user stories
 
-- [ ] T032 [P] Run `quickstart.md` §6 (single-instance) manual check
-- [ ] T033 [P] Run `quickstart.md` §7 (first-launch and corrupted-data-file empty states) manual check (FR-017, FR-018)
-- [ ] T034 [P] Run `quickstart.md` §8 (offline) manual check (Constitution Principle II, SC-005)
-- [ ] T035 Run the full `quickstart.md` script end-to-end as final v1 sign-off
-- [ ] T036 [P] Manual check: with existing data already saved, click the tray icon and confirm the main window renders that data within approximately 1 second (SC-001)
+- [X] T032 [P] Run `quickstart.md` §6 (single-instance) manual check
+- [X] T033 [P] Run `quickstart.md` §7 (first-launch and corrupted-data-file empty states) manual check (FR-017, FR-018)
+- [X] T034 [P] Run `quickstart.md` §8 (offline) manual check (Constitution Principle II, SC-005)
+- [X] T035 Run the full `quickstart.md` script end-to-end as final v1 sign-off
+- [X] T036 [P] Manual check: with existing data already saved, click the tray icon and confirm the main window renders that data within approximately 1 second (SC-001)
 
 ---
 
